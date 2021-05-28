@@ -40,7 +40,7 @@ public class InvesterControler {
 			hitEndPointForGet = httpAgent.hitEndPointForGet(marketListingUrl);
 			System.out.println("hitEndPointForGet" + hitEndPointForGet);
 			ResultList ResultList = ctrlHelper.bindJsonToObj(hitEndPointForGet, ResultList.class);
-			System.out.println("ResultList:"+ResultList);
+			System.out.println("ResultList: received");
 			modelCallHandler.processResultList(ResultList);
 		} catch (IOException | InterruptedException | ExecutionException e) {
 			e.printStackTrace();
