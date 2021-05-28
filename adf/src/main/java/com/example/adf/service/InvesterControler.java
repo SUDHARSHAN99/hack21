@@ -33,7 +33,7 @@ public class InvesterControler {
 	private ModelCallHandler modelCallHandler;
 	
 	@RequestMapping(value = "/prosper/list", method = RequestMethod.GET)
-	public String testAPI(HttpServletRequest httpServletRequest, HttpServletResponse response) {
+	public String investerList(HttpServletRequest httpServletRequest, HttpServletResponse response) {
 		String hitEndPointForGet;
 		try {
 			System.out.println("marketListingUrl" + marketListingUrl);
@@ -50,7 +50,7 @@ public class InvesterControler {
 	}
 	
 	@RequestMapping(value = "/ping", method = RequestMethod.GET)
-	public String testPing(HttpServletRequest httpServletRequest, HttpServletResponse response) {
+	public String investerPing(HttpServletRequest httpServletRequest, HttpServletResponse response) {
 		
 		return "PoNg:)";
 
