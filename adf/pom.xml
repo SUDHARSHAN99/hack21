@@ -37,6 +37,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>2.9.2</version>
@@ -86,6 +90,12 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.20</version>
 		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
@@ -141,5 +151,31 @@
 			</plugin>
 		</plugins>
 	</build>
-
+<profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <datasource.driver>org.h2.Driver</datasource.driver>
+                <datasource.url>jdbc:h2:mem:testdb</datasource.url>
+                <datasource.username>adf</datasource.username>
+                <datasource.password>adf</datasource.password>
+                <hibernate.naming-strategy>org.hibernate.cfg.EJB3NamingStrategy
+                </hibernate.naming-strategy>
+                <jpa.database-platform>org.hibernate.dialect.H2Dialect</jpa.database-platform>
+                <jpa.show-sql>true</jpa.show-sql>
+                <et.client.id>utd4mwd7ytsgunnqkskrq72r</et.client.id>
+                <et.client.secret>5mUrvAqnCcA8JMkRFFx4bpVG</et.client.secret>
+                <!-- Config file path -->
+                <config.path>config_local.properties</config.path>
+                <clarity.config.path>clarity_config_local.properties</clarity.config.path>
+                <tu.config.path>tu_config_local.properties</tu.config.path>
+                <sf.config.path>sf_config_local.properties</sf.config.path>
+                <config.builder.path>application-test.properties</config.builder.path>
+                <!-- Config file path end -->
+            </properties>
+        </profile>
+       </profiles> 
 </project>
