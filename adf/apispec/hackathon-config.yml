@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  description: Marketplaces is a third-party system, sells the loan to the investors; the investors can be both Institutional and retail investors. Marketplaces sell their loan in different methods like the first-come, first-serve, bidding process. They list all loans which are available for purchase through predefined multiple windows in a day. Some of the marketplaces are highly competitive, and investors buy their loans in <10 millisecond.
+  version: 1.0.0
+  title: ADF Hackathon Engine
+  contact:
+    name: ADF Data Science pvt ltd
+    email: deepanshumishra@applieddatafinance.com
+  license:
+    name: ADF Data Science License
+    url: https://www.personifyfinancial.com
+paths:
+  /prosper/orders/:
+    post:
+      tags:
+      - biding
+      summary: Investor system will make a call to market place system for biding.
+      description: Accept or reject lead and return the response
+      operationId: biding
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProsperRequest'
+      responses:
+        200:
+          description: Return succesfull response
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProsperResponse'
+        250:
+          description: Return reject response
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProsperResponse'
+  /prosper/listing/:
+    get:
+      tags:
+      - getListing
+      summary: Investor system will make a call to market place system for biding.
+      description: Accept or reject lead and return the response
+      operationId: getListing
+      responses:
+        200:
+          description: Return succesfull response
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+        400:
+          description: Return reject response
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+components:
+  schemas:
+    ProsperRequest:
+      description: Containing loan biding information.
+      properties:
+        listing_id:
+          type: integer
+        bid_amount:
+          type: number
+    ProsperResponse:
+      description: Containing biding status information.
+      properties:
+        status:
+          type: string
+    Listing:
+      description: contains list of loan request
+      properties:
+        name:
+          type: string
+      
