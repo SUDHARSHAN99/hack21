@@ -54,10 +54,10 @@ public class ModelCallHandler {
 	}
 	
 	public void processLead(Result result) {
-		boolean validateRequest = uwExecutionHelper.validateRequest(result);
+		boolean validateRequest = true;//uwExecutionHelper.validateRequest(result);
 		System.out.println(" validateRequest result=" +validateRequest +" " + result.getListing_number() );
 		if(validateRequest) {
-			boolean ruleResult = buildAndExcecuteBasicChecks(result);
+			boolean ruleResult = true ;//buildAndExcecuteBasicChecks(result);
 			System.out.println(" ruleResult = " + ruleResult + "  " + result.getListing_number());
 			if(ruleResult) {
 				boolean modelResult = executeNarAndRiskModelUW();
