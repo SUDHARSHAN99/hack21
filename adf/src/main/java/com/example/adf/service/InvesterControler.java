@@ -36,6 +36,7 @@ public class InvesterControler {
 	public String testAPI(HttpServletRequest httpServletRequest, HttpServletResponse response) {
 		String hitEndPointForGet;
 		try {
+			System.out.println("marketListingUrl" + marketListingUrl);
 			hitEndPointForGet = httpAgent.hitEndPointForGet(marketListingUrl);
 			System.out.println("hitEndPointForGet" + hitEndPointForGet);
 			ResultList ResultList = ctrlHelper.bindJsonToObj(hitEndPointForGet, ResultList.class);

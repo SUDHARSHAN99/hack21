@@ -161,51 +161,65 @@ public class UwExecutionHelper {
 		if ( result.getStated_monthly_income() < 1) {
 			status = false;
 			errorMessage="Invalid income";
-		}else if (isBlank(result.getEmployment_status_description())) {
+		}
+		if (isBlank(result.getEmployment_status_description())) {
 			status = false;
-			errorMessage="employment status is blank";
-		}else if (result.getAmount_funded() < 0) {
+			errorMessage= errorMessage +","+ "employment status is blank";
+		}
+        if (result.getAmount_funded() < 0) {
 			status = false;
-			errorMessage="invalid amount fund";
-		}else if (isBlank(result.getInvestment_type_description())) {
+			errorMessage=errorMessage +","+"invalid amount fund";
+		}
+        if (isBlank(result.getInvestment_type_description())) {
 			status = false;
-			errorMessage="invalid investment type";
-		}else if (result.getLender_yield() < 1) {
+			errorMessage=errorMessage +","+"invalid investment type";
+		}
+        if (result.getLender_yield() < 0) {
 			status = false;
-			errorMessage="invalid lender yield";
-		}else if (result.getListing_monthly_payment() < 1) {
+			errorMessage=errorMessage +","+"invalid lender yield";
+		}
+        if (result.getListing_monthly_payment() < 1) {
 			status = false;
 			// }else if(result.isIncome_ver}else ifiable())
-			errorMessage="invalid listing monthly payment";
-		}else if (isBlank(result.getIncome_range_description())) {
+			errorMessage=errorMessage +","+"invalid listing monthly payment";
+		}
+        if (isBlank(result.getIncome_range_description())) {
 			status = false;
-			errorMessage="invalid income range description";
-		}else if (isBlank(result.getProsper_rating())) {
+			errorMessage=errorMessage +","+"invalid income range description";
+		}
+        if (isBlank(result.getProsper_rating())) {
 			status = false;
-			errorMessage="invalid prosper rating";
-		}else if (result.getBorrower_rate() < 1) {
+			errorMessage=errorMessage +","+"invalid prosper rating";
+		}
+        if (result.getBorrower_rate() < 0) {
 			status = false;
-			errorMessage="invalid borrower rate";
-		}else if (result.getBorrower_apr() < 1) {
+			errorMessage=errorMessage +","+"invalid borrower rate";
+		}
+        if (result.getBorrower_apr() <0) {
 			status = false;
-			errorMessage="invalid borrower apr";
+			errorMessage=errorMessage +","+"invalid borrower apr";
 			// }else if(result.isPartial_funding_indicator())
 
-		}else if (result.getLender_indicator() < 1) {
+		}
+        if (result.getLender_indicator() < 0) {
 			status = false;
-			errorMessage="invalid lender indicator";
-		}else if (result.getListing_category_id() < 1) {
+			errorMessage=errorMessage +","+"invalid lender indicator";
+		}
+        if (result.getListing_category_id() < 0) {
 			status = false;
-			errorMessage="invalid listing category";
-		}else if (result.getListing_amount() < 1) {
+			errorMessage=errorMessage +","+"invalid listing category";
+		}
+        if (result.getListing_amount() < 1) {
 			status = false;
-			errorMessage="invalid listing amount";
-		}else if (result.getPrior_prosper_loans() < 1) {
+			errorMessage=errorMessage +","+"invalid listing amount";
+		}
+        if (result.getPrior_prosper_loans() < 1) {
 			status = false;
-			errorMessage="invalid propser loan";
-		}else if (result.getDti_wprosper_loan() < 1) {
+			errorMessage=errorMessage +","+"invalid propser loan";
+		}
+        if (result.getDti_wprosper_loan() < 0) {
 			status = false;
-			errorMessage="invalid dti wprosper loan";
+			errorMessage=errorMessage +","+"invalid dti wprosper loan";
 		}
 		if( !status) {
 			//log error message to DB
