@@ -17,8 +17,8 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name = "leadBidStatus")
-@NamedQuery(name = "leadBidStatus.findAll", query = "SELECT b FROM LeadBidStatus b")
+@Table(name = "leadListingRequest")
+@NamedQuery(name = "leadListingRequest.findAll", query = "SELECT b FROM LeadListingRequest b")
 public class LeadListingRequest implements Serializable,Cloneable {
   private static final long serialVersionUID = 1L;
 

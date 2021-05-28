@@ -108,8 +108,11 @@ public class UwExecutionHelper {
 	}
 
 	public boolean validateState(String state) {
-		if (StringUtils.isNotBlank(state))
+		System.out.println("Input State:"+state);
+		if (StringUtils.isNotBlank(state)) {
+			System.out.println("Input State:2"+state);
 			return stateMap.containsKey(state);
+		}
 		else
 			return false;
 	}
@@ -121,8 +124,10 @@ public class UwExecutionHelper {
 
 	public boolean validateTerm(int term) {
 		try {
-			if (term == 60)
+			if (term == 60) {
+				System.out.println("Input Term:"+ term);
 				return false;
+			}
 			else
 				return true;
 		} catch (Exception e) {
@@ -132,13 +137,18 @@ public class UwExecutionHelper {
 	}
 
 	public boolean validateLoan(String loan) {
-		if (StringUtils.isNotBlank(loan) && loan.equalsIgnoreCase("Whole"))
+		if (StringUtils.isNotBlank(loan) && loan.equalsIgnoreCase("Whole")) {
+			System.out.println("validateLoan whole loan"+loan);
 			return false;
-		else
+		}
+		else {
+			System.out.println("validateLoan whole loan"+loan);
 			return true;
+		}
 	}
 
 	public boolean validateCoBorrowerApplication(boolean value) {
+		System.out.println("validateCoBorrowerApplication:"+ value);
 		if (!value)
 			return false;
 		else
@@ -146,42 +156,68 @@ public class UwExecutionHelper {
 	}
 
 	public boolean validateRequest(Result result) {
-		if (result.getStated_monthly_income() < 1)
-			return false;
-		if (isBlank(result.getEmployment_status_description()))
-			return false;
-		if (result.getAmount_funded() < 1)
-			return false;
-		if (isBlank(result.getInvestment_type_description()))
-			return false;
-		if (result.getLender_yield() < 1)
-			return false;
-		if (result.getListing_monthly_payment() < 1)
-			return false;
-		// if(result.isIncome_verifiable())
+		boolean status = true;
+		String errorMessage = null;
+		if ( result.getStated_monthly_income() < 1) {
+			status = false;
+			errorMessage="Invalid income";
+		}else if (isBlank(result.getEmployment_status_description())) {
+			status = false;
+			errorMessage="employment status is blank";
+		}else if (result.getAmount_funded() < 0) {
+			status = false;
+			errorMessage="invalid amount fund";
+		}else if (isBlank(result.getInvestment_type_description())) {
+			status = false;
+			errorMessage="invalid investment type";
+		}else if (result.getLender_yield() < 1) {
+			status = false;
+			errorMessage="invalid lender yield";
+		}else if (result.getListing_monthly_payment() < 1) {
+			status = false;
+			// }else if(result.isIncome_ver}else ifiable())
+			errorMessage="invalid listing monthly payment";
+		}else if (isBlank(result.getIncome_range_description())) {
+			status = false;
+			errorMessage="invalid income range description";
+		}else if (isBlank(result.getProsper_rating())) {
+			status = false;
+			errorMessage="invalid prosper rating";
+		}else if (result.getBorrower_rate() < 1) {
+			status = false;
+			errorMessage="invalid borrower rate";
+		}else if (result.getBorrower_apr() < 1) {
+			status = false;
+			errorMessage="invalid borrower apr";
+			// }else if(result.isPartial_funding_indicator())
 
-		if (isBlank(result.getIncome_range_description()))
-			return false;
-		if (isBlank(result.getProsper_rating()))
-			return false;
-		if (result.getBorrower_rate() < 1)
-			return false;
-		if (result.getBorrower_apr() < 1)
-			return false;
-		// if(result.isPartial_funding_indicator())
-
-		if (result.getLender_indicator() < 1)
-			return false;
-		if (result.getListing_category_id() < 1)
-			return false;
-		if (result.getListing_amount() < 1)
-			return false;
-		if (result.getPrior_prosper_loans() < 1)
-			return false;
-		if (result.getDti_wprosper_loan() < 1)
-			return false;
+		}else if (result.getLender_indicator() < 1) {
+			status = false;
+			errorMessage="invalid lender indicator";
+		}else if (result.getListing_category_id() < 1) {
+			status = false;
+			errorMessage="invalid listing category";
+		}else if (result.getListing_amount() < 1) {
+			status = false;
+			errorMessage="invalid listing amount";
+		}else if (result.getPrior_prosper_loans() < 1) {
+			status = false;
+			errorMessage="invalid propser loan";
+		}else if (result.getDti_wprosper_loan() < 1) {
+			status = false;
+			errorMessage="invalid dti wprosper loan";
+		}
+		if( !status) {
+			//log error message to DB
+			if( errorMessage != null ) {
+				System.out.println("validation failure "+errorMessage);
+			}
+				
+		}
+		//return status;
 		return true;
 	}
+
 
 	public boolean isBlank(String str) {
 		if (str == null || str.isEmpty())
