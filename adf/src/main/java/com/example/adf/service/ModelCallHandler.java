@@ -60,7 +60,7 @@ public class ModelCallHandler {
 			boolean ruleResult = buildAndExcecuteBasicChecks(result);
 			System.out.println(" ruleResult = " + ruleResult + "  " + result.getListing_number());
 			if(ruleResult) {
-				boolean modelResult = true; //executeNarAndRiskModelUW();
+				boolean modelResult = executeNarAndRiskModelUW();
 				if(modelResult) {
 					System.out.println(" Lead is eligible for bid" + result.getListing_number());
 					makeBidRequest(result);
@@ -90,7 +90,7 @@ public class ModelCallHandler {
 	private boolean executeNarAndRiskModelUW() {
 		AtomicBoolean flag = new AtomicBoolean();
 		try {
-			CountDownLatch countDownLatch = new CountDownLatch(2);
+			CountDownLatch countDownLatch = new CountDownLatch(1);
 			executorService.execute(() -> {
 				try {
 					callNarModel();
@@ -101,16 +101,11 @@ public class ModelCallHandler {
 					countDownLatch.countDown();
 				}
 			});
-			executorService.execute(() -> {
-				try {
-					callRiskModel();
-				} catch (Exception e) {
-					flag.set(true);
-					e.printStackTrace();
-				} finally {
-					countDownLatch.countDown();
-				}
-			});
+			/*
+			 * executorService.execute(() -> { try { callRiskModel(); } catch (Exception e)
+			 * { flag.set(true); e.printStackTrace(); } finally {
+			 * countDownLatch.countDown(); } });
+			 */
 			countDownLatch.await();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,6 +128,7 @@ public class ModelCallHandler {
 		NarModelRequest narModelRequest = buildNarModelRequest();
 		String request = JsonMapper.bindObjectToString(narModelRequest);
 		String response = httpAgent.hitEndPoint(request, riskModelUrl, contentType);
+		System.out.println("risk and nar response"+ response);
 		NarModelResponse narModelResponse =	JsonMapper.bindStringToObject(response, NarModelResponse.class);
 	}
 
