@@ -11,6 +11,7 @@ import org.asynchttpclient.AsyncHttpClient;
 import org.asynchttpclient.BoundRequestBuilder;
 import org.asynchttpclient.DefaultAsyncHttpClientConfig;
 import org.asynchttpclient.Dsl;
+import org.asynchttpclient.Request;
 import org.asynchttpclient.Response;
 import org.springframework.stereotype.Service;
 
@@ -36,4 +37,17 @@ public class HttpAgent {
 	    System.out.println(" Response ="+ response);
 	    return response.getResponseBody();
 	}
+	
+	public String hitEndPoint(String post, String url, String contentType) throws InterruptedException, ExecutionException {
+		System.out.println("hit end point: " +url);
+	    Request request = httpClient.preparePost(url)
+	    .setHeader("Content-Type",contentType)
+	    .setBody(post)
+	    .build();
+	    System.out.println("hit end point request: " +request);
+	    Future<Response> whenResponse = httpClient.executeRequest(request);
+	    Response response = whenResponse.get();
+	    System.out.println("hit end point response: " +response);
+	    return response.getResponseBody();
+	  }
 }
