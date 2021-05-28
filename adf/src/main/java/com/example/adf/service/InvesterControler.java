@@ -28,16 +28,19 @@ public class InvesterControler {
 	private ControllerHelper ctrlHelper;
 	@Value("${marketplace.listing.url}")
 	private String marketListingUrl;
-	private String hitEndPointForGet;
-
+	
+	@Autowired
+	private ModelCallHandler modelCallHandler;
+	
 	@RequestMapping(value = "/prosper/list", method = RequestMethod.GET)
 	public String testAPI(HttpServletRequest httpServletRequest, HttpServletResponse response) {
-
+		String hitEndPointForGet;
 		try {
 			hitEndPointForGet = httpAgent.hitEndPointForGet(marketListingUrl);
 			System.out.println("hitEndPointForGet" + hitEndPointForGet);
 			ResultList ResultList = ctrlHelper.bindJsonToObj(hitEndPointForGet, ResultList.class);
 			System.out.println("ResultList:"+ResultList);
+			modelCallHandler.processResultList(ResultList);
 		} catch (IOException | InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}

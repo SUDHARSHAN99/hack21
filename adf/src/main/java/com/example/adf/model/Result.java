@@ -84,4 +84,5 @@ public class Result {
 	public double stated_monthly_income;
 	public int verification_stage;
 	public String whole_loan_start_date;
+	private String whole_loan;
 }

@@ -7,22 +7,23 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
+import com.example.adf.model.Result;
 import com.github.jknack.handlebars.internal.lang3.StringUtils;
 
 @Service
 public class UwExecutionHelper {
 
-	private  ConcurrentHashMap<String, Boolean> modelScoreMap;
-	private  ConcurrentHashMap<String, Boolean> stateMap;
+	private ConcurrentHashMap<String, Boolean> modelScoreMap;
+	private ConcurrentHashMap<String, Boolean> stateMap;
 
 	@PostConstruct
 	public void init() {
 		buildScoreMap();
 		buildStateMap();
 	}
-	//["CO", "DC", "ID", "IN", 
-	 // "IA", "KS", "LA", "ME",
-	 //"OK", "SC", "TX", "UT", 
+	// ["CO", "DC", "ID", "IN",
+	// "IA", "KS", "LA", "ME",
+	// "OK", "SC", "TX", "UT",
 	// "WV", "WY", "PA"]
 
 	private void buildStateMap() {
@@ -31,17 +32,17 @@ public class UwExecutionHelper {
 		stateMap.put("DC", true);
 		stateMap.put("ID", true);
 		stateMap.put("IN", true);
-		
+
 		stateMap.put("IA", true);
 		stateMap.put("KS", true);
 		stateMap.put("LA", true);
 		stateMap.put("ME", true);
-		
+
 		stateMap.put("OK", true);
 		stateMap.put("SC", true);
 		stateMap.put("TX", true);
 		stateMap.put("UT", true);
-		
+
 		stateMap.put("WV", true);
 		stateMap.put("WY", true);
 		stateMap.put("PA", true);
@@ -105,17 +106,90 @@ public class UwExecutionHelper {
 		modelScoreMap.put("10_1", true);
 		modelScoreMap.put("10_2", true);
 	}
-	
+
 	public boolean validateState(String state) {
-		if(StringUtils.isNotBlank(state))
+		if (StringUtils.isNotBlank(state))
 			return stateMap.containsKey(state);
 		else
 			return false;
 	}
-	
+
 	public boolean validateModelScore(int riskModelScore, int narModelScore) {
 		String key = riskModelScore + "_" + narModelScore;
 		return modelScoreMap.containsKey(key);
+	}
+
+	public boolean validateTerm(int term) {
+		try {
+			if (term == 60)
+				return false;
+			else
+				return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return true;
+		}
+	}
+
+	public boolean validateLoan(String loan) {
+		if (StringUtils.isNotBlank(loan) && loan.equalsIgnoreCase("Whole"))
+			return false;
+		else
+			return true;
+	}
+
+	public boolean validateCoBorrowerApplication(boolean value) {
+		if (!value)
+			return false;
+		else
+			return true;
+	}
+
+	public boolean validateRequest(Result result) {
+		if (result.getStated_monthly_income() < 1)
+			return false;
+		if (isBlank(result.getEmployment_status_description()))
+			return false;
+		if (result.getAmount_funded() < 1)
+			return false;
+		if (isBlank(result.getInvestment_type_description()))
+			return false;
+		if (result.getLender_yield() < 1)
+			return false;
+		if (result.getListing_monthly_payment() < 1)
+			return false;
+		// if(result.isIncome_verifiable())
+
+		if (isBlank(result.getIncome_range_description()))
+			return false;
+		if (isBlank(result.getProsper_rating()))
+			return false;
+		if (result.getBorrower_rate() < 1)
+			return false;
+		if (result.getBorrower_apr() < 1)
+			return false;
+		// if(result.isPartial_funding_indicator())
+
+		if (result.getLender_indicator() < 1)
+			return false;
+		if (result.getListing_category_id() < 1)
+			return false;
+		if (result.getListing_amount() < 1)
+			return false;
+		if (result.getPrior_prosper_loans() < 1)
+			return false;
+		if (result.getDti_wprosper_loan() < 1)
+			return false;
+		return true;
+	}
+
+	public boolean isBlank(String str) {
+		if (str == null || str.isEmpty())
+			return true;
+		str = str.trim();
+		if (str.length() > 0)
+			return false;
+		return true;
 	}
 
 }
