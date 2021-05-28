@@ -13,22 +13,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.adf.Helper.ControllerHelper;
+import com.example.adf.model.ResultList;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @RestController
 public class InvesterControler {
 
 	@Autowired
 	HttpAgent httpAgent;
+	@Autowired
+	private ObjectMapper objectMapper;
+	@Autowired
+	private ControllerHelper ctrlHelper;
 	@Value("${marketplace.listing.url}")
 	private String marketListingUrl;
 	private String hitEndPointForGet;
 
 	@RequestMapping(value = "/prosper/list", method = RequestMethod.GET)
-	public String testAPI(HttpServletRequest httpServletRequest,
-			HttpServletResponse response) {
+	public String testAPI(HttpServletRequest httpServletRequest, HttpServletResponse response) {
 
 		try {
 			hitEndPointForGet = httpAgent.hitEndPointForGet(marketListingUrl);
-			System.out.println("hitEndPointForGet"+hitEndPointForGet);
+			System.out.println("hitEndPointForGet" + hitEndPointForGet);
+			ResultList ResultList = ctrlHelper.bindJsonToObj(hitEndPointForGet, ResultList.class);
+			System.out.println("ResultList:"+ResultList);
 		} catch (IOException | InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
