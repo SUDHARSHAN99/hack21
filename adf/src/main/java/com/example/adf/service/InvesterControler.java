@@ -48,4 +48,11 @@ public class InvesterControler {
 		return null;
 
 	}
+	
+	@RequestMapping(value = "/ping", method = RequestMethod.GET)
+	public String testPing(HttpServletRequest httpServletRequest, HttpServletResponse response) {
+		
+		return "PoNg:)";
+
+	}
 }
