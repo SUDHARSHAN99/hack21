@@ -16,7 +16,6 @@ import com.example.adf.model.NarModelRequest;
 import com.example.adf.model.NarModelResponse;
 import com.example.adf.model.RiskModelRequest;
 import com.example.adf.model.RiskModelResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 
 @Service
