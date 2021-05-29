@@ -79,6 +79,8 @@ public class ModelCallHandler {
 				 */
 			}
 		}
+		System.out.println("Call to save DB results");
+		executorService.execute(() -> saveToDbForInvestorService(result.getListing_number()));
 	}
 	
 	private void makeBidRequest(Result result) {
@@ -104,7 +106,7 @@ public class ModelCallHandler {
 	private void buildBidResponse(BidResponse bidResponse) {
 		
 		List<BidRequest> bid_requests = bidResponse.getBid_requests();
-		List<LeadBidStatus> LeadBidStatusList = new ArrayList<LeadBidStatus>();
+		//List<LeadBidStatus> LeadBidStatusList = new ArrayList<LeadBidStatus>();
 		for (BidRequest bidRequest : bid_requests) {
 			LeadBidStatus leadBidStatus = new LeadBidStatus();
 			leadBidStatus.setBidStatus(bidRequest.getBid_status());
@@ -112,11 +114,12 @@ public class ModelCallHandler {
 			leadBidStatus.setBidAmount(bidRequest.getBid_amount());
 			leadBidStatus.setDatestamp(new Date());
 			leadBidStatus.setLeadId(bidRequest.getListing_id());
-			
-			LeadBidStatusList.add(leadBidStatus);
+			DataHelper.addLeadBidStatus(bidRequest.getListing_id(), leadBidStatus);
+		//	LeadBidStatusList.add(leadBidStatus);
 		}
-		System.out.println("LeadBidStatusList"+ LeadBidStatusList.size());
-		repoHelper.saveAffilcateLeadBidStatusList(LeadBidStatusList);
+	//	System.out.println("LeadBidStatusList"+ LeadBidStatusList.size());
+		//DataHelper.addLeadBidStatus(leadId, LeadBidStatusList);
+		//repoHelper.saveLeadBidStatusList(LeadBidStatusList);
 	}
 
 	private boolean executeNarAndRiskModelUW(Result result) {
@@ -619,17 +622,36 @@ public class ModelCallHandler {
 
 	}
 	
+	public void saveToDbForInvestorService(long leadId) {
+		saveLeadBidStatus(leadId);
+		saveInvestorDecisionRules(leadId);
+	}
+	
 	public void saveInvestorDecisionRules(long leadId) {
 		try {
 			if (DataHelper.getDecisionRules(leadId) != null) {
 				System.out.println("Decision rules for leadId " + leadId + ":" + DataHelper.getDecisionRules(leadId));
 				List<InvestorDecisionRule> decisionRuleServices = DataHelper.getDecisionRules(leadId);
 				System.out.println("Save these decision rules for " + leadId + " is  " + decisionRuleServices);
-				repoHelper.saveAffilcateDecisionRulesList(decisionRuleServices);
+				repoHelper.saveDecisionRulesList(decisionRuleServices);
 				System.out.println("decision rules saved for " + leadId);
 			}
 		} catch (Exception e) {
 			System.out.println("Excepption occured while storing the decision rules " + e);
+		}
+	}
+	
+	public void saveLeadBidStatus(long leadId) {
+		try {
+			if (DataHelper.getLeadBidStatus(leadId) != null) {
+				System.out.println("Lead Bid status for leadId " + leadId + ":" + DataHelper.getLeadBidStatus(leadId));
+				List<LeadBidStatus> leadBidStatusList = DataHelper.getLeadBidStatus(leadId);
+				System.out.println("Save these bid status list for " + leadId + " is  " + leadBidStatusList);
+				repoHelper.saveLeadBidStatusList(leadBidStatusList);
+				System.out.println("Bid Status saved for " + leadId);
+			}
+		} catch (Exception e) {
+			System.out.println("Excepption occured while storing the Bid status " + e);
 		}
 
 	}

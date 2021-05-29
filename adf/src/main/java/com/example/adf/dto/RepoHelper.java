@@ -12,15 +12,15 @@ public class RepoHelper {
 
 	@Autowired
 	private InvestorDecisionRuleRepository nvestorDecisionRuleRepository;
-
-	public List<InvestorDecisionRule> saveAffilcateDecisionRulesList(List<InvestorDecisionRule> decisionRules) {
-		return nvestorDecisionRuleRepository.saveAll(decisionRules);
-	}
 	
 	@Autowired
 	private LeadBidStatusRepo leadBidStatusRepo;
 
-	public List<LeadBidStatus> saveAffilcateLeadBidStatusList(List<LeadBidStatus> leadBidStatus) {
+	public List<InvestorDecisionRule> saveDecisionRulesList(List<InvestorDecisionRule> decisionRules) {
+		return nvestorDecisionRuleRepository.saveAll(decisionRules);
+	}
+	
+	public List<LeadBidStatus> saveLeadBidStatusList(List<LeadBidStatus> leadBidStatus) {
 		return leadBidStatusRepo.saveAll(leadBidStatus);
 	}
 	
