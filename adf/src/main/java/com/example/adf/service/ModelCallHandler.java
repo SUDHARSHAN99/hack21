@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.adf.Helper.DataHelper;
 import com.example.adf.dto.InvestorDecisionRule;
+import com.example.adf.dto.Lead;
 import com.example.adf.dto.LeadBidStatus;
 import com.example.adf.dto.RepoHelper;
 import com.example.adf.model.BidRequest;
@@ -53,9 +54,6 @@ public class ModelCallHandler {
 	private HttpAgent httpAgent;
 	
 	@Autowired
-	private DataHelper dataHelper;
-	
-	@Autowired
 	private UwExecutionHelper uwExecutionHelper;
 	
 	@Autowired
@@ -69,7 +67,7 @@ public class ModelCallHandler {
 		boolean validateRequest = true;//uwExecutionHelper.validateRequest(result);
 		System.out.println(" validateRequest result=" +validateRequest +" " + result.getListing_number() );
 		if(validateRequest) {
-			dataHelper.buildLeadEntity(result);
+			buildLeadEntity(result);
 			boolean ruleResult = true ;//buildAndExcecuteBasicChecks(result);
 			System.out.println(" ruleResult = " + ruleResult + "  " + result.getListing_number());
 			if(ruleResult) {
@@ -620,6 +618,14 @@ public class ModelCallHandler {
 			System.out.println("Excepption occured while storing the decision rules " + e);
 		}
 
+	}
+	
+	public void buildLeadEntity(Result result) {
+		Lead lead = new Lead();
+		lead.setEmpStatus(result.getEmployment_status_description());
+		lead.setEmpType(result.getEmployment_status_description());
+		lead.setListingId(result.getListing_number());
+		
 	}
 
 }

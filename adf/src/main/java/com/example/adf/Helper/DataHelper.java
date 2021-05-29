@@ -37,13 +37,4 @@ public class DataHelper {
 		return scoreMap.put(leadId, score);
 	}
 
-	public void buildLeadEntity(Result result) {
-		Lead lead = new Lead();
-		lead.setEmpStatus(result.getEmployment_status_description());
-		lead.setEmpType(result.getEmployment_status_description());
-		lead.setListingId(result.getListing_number());
-		
-	}
-	
-
 }
