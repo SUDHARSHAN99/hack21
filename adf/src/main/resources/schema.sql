@@ -40,3 +40,13 @@ CREATE TABLE leadListingRequest (
   request blob DEFAULT NULL,
   datestamp datetime DEFAULT CURRENT_TIMESTAMP
 );
+
+DROP TABLE IF EXISTS investorDecisionRule;
+
+CREATE TABLE investorDecisionRule (
+  id INT AUTO_INCREMENT  PRIMARY KEY,
+  leadId long NOT NULL,
+  created_dtm datetime DEFAULT CURRENT_TIMESTAMP,
+  rule_name VARCHAR(50) NOT NULL,
+  rule_decision VARCHAR(50) NOT NULL
+);
