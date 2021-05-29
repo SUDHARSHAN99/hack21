@@ -44,7 +44,7 @@ public class Lead implements Serializable, Cloneable {
 	private String empStatus;
 	
 	@Column(name = "listingId")
-	private String listingId;
+	private Long listingId;
 
 	public Lead() {
 	}
@@ -97,11 +97,11 @@ public class Lead implements Serializable, Cloneable {
 		this.empStatus = empStatus;
 	}
 
-	public String getListingId() {
+	public Long getListingId() {
 		return listingId;
 	}
 
-	public void setListingId(String listingId) {
+	public void setListingId(Long listingId) {
 		this.listingId = listingId;
 	}
 

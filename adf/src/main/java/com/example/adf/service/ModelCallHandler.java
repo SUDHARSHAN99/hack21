@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.adf.Helper.DataHelper;
 import com.example.adf.dto.InvestorDecisionRule;
+import com.example.adf.dto.LeadBidStatus;
 import com.example.adf.dto.RepoHelper;
 import com.example.adf.model.BidRequest;
 import com.example.adf.model.BidRequestList;
@@ -102,7 +103,7 @@ public class ModelCallHandler {
 	}
 
 	private void buildBidResponse(BidResponse bidResponse) {
-		// TODO Auto-generated method stub
+		LeadBidStatus leadBidStatus = new LeadBidStatus();
 		
 	}
 

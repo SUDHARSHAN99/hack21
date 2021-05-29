@@ -5,7 +5,7 @@ CREATE TABLE lead (
   fname VARCHAR(50) NOT NULL,
   lname VARCHAR(50) NOT NULL,
   income int DEFAULT NULL,
-  listingId long DEFAULT NULL
+  listingId long DEFAULT NULL,
   empType VARCHAR(100) NOT NULL,
   empStatus VARCHAR(50) NOT NULL,
   datestamp datetime DEFAULT CURRENT_TIMESTAMP
@@ -17,7 +17,7 @@ CREATE TABLE leadBidStatus (
   id INT AUTO_INCREMENT  PRIMARY KEY,
   leadId long NOT NULL,
   bidAmount int(50) NOT NULL,
-  listing_id int DEFAULT NULL,
+  listing_id long DEFAULT NULL,
   bidStatus VARCHAR(50) NOT NULL,
   datestamp datetime DEFAULT CURRENT_TIMESTAMP
 );
