@@ -69,7 +69,7 @@ public class ModelCallHandler {
 		System.out.println(" validateRequest result=" +validateRequest +" " + result.getListing_number() );
 		if(validateRequest) {
 			buildLeadEntity(result);
-			boolean ruleResult = true ;//buildAndExcecuteBasicChecks(result);
+			boolean ruleResult = buildAndExcecuteBasicChecks(result);
 			System.out.println(" ruleResult = " + ruleResult + "  " + result.getListing_number());
 			if(ruleResult) {
 				boolean modelResult = executeNarAndRiskModelUW(result);
