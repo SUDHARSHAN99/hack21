@@ -65,7 +65,7 @@ public class InvesterControler {
 	@RequestMapping(value = "/bidSatus", method = RequestMethod.GET)
 	public String investerBidStatus(HttpServletRequest httpServletRequest, HttpServletResponse response) {
 		List<LeadBidStatus> findAllLeadBidStatusList = repoHelper.findAllLeadBidStatusList();
-		return findAllLeadBidStatusList.toString();
+		return findAllLeadBidStatusList.size()+"";
 		
 	}
 }
