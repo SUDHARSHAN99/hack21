@@ -67,7 +67,7 @@ public class ModelCallHandler {
 	}
 	
 	public void processLead(Result result) {
-		boolean validateRequest = true;//uwExecutionHelper.validateRequest(result);
+		boolean validateRequest = uwExecutionHelper.validateRequest(result);
 		System.out.println(" validateRequest result=" +validateRequest +" " + result.getListing_number() );
 		if(validateRequest) {
 			buildLeadEntity(result);
