@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.adf.Helper.ControllerHelper;
+import com.example.adf.dto.InvestorDecisionRule;
 import com.example.adf.dto.LeadBidStatus;
 import com.example.adf.dto.RepoHelper;
 import com.example.adf.model.ResultList;
@@ -66,6 +68,13 @@ public class InvesterControler {
 	public String investerBidStatus(HttpServletRequest httpServletRequest, HttpServletResponse response) {
 		List<LeadBidStatus> findAllLeadBidStatusList = repoHelper.findAllLeadBidStatusList();
 		return findAllLeadBidStatusList.size()+"";
+		
+	}
+	
+	@RequestMapping(value = "/leadDecisionRule/{leadId}", method = RequestMethod.GET)
+	public String investerLeadDecisionRuleStatus(@PathVariable String leadId) {
+		List<InvestorDecisionRule> allInvestorDecisionRuleList = repoHelper.findByListingId(Long.parseLong(leadId));
+		return allInvestorDecisionRuleList.toString();
 		
 	}
 }

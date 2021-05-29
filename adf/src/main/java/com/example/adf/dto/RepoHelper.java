@@ -27,4 +27,8 @@ public class RepoHelper {
 	public List<LeadBidStatus> findAllLeadBidStatusList() {
 		return leadBidStatusRepo.findAll();
 	}
+	
+	public List<InvestorDecisionRule> findByListingId(Long leadId) {
+		return nvestorDecisionRuleRepository.findByLeadId(leadId);
+	}
 }
