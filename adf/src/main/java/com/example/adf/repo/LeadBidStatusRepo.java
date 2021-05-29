@@ -10,10 +10,9 @@ import com.example.adf.dto.Lead;
 import com.example.adf.dto.LeadBidStatus;
 import com.example.adf.dto.LeadListingRequest;
 
-public interface LeadBidStatusRepo extends JpaRepository<LeadListingRequest, Long> {
+public interface LeadBidStatusRepo extends JpaRepository<LeadBidStatus, Long> {
   
 
   List<Lead> findByLeadId(long id);
-
 
 }

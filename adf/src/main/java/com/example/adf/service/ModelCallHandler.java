@@ -2,6 +2,7 @@ package com.example.adf.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
@@ -101,8 +102,21 @@ public class ModelCallHandler {
 	}
 
 	private void buildBidResponse(BidResponse bidResponse) {
-		LeadBidStatus leadBidStatus = new LeadBidStatus();
 		
+		List<BidRequest> bid_requests = bidResponse.getBid_requests();
+		List<LeadBidStatus> LeadBidStatusList = new ArrayList<LeadBidStatus>();
+		for (BidRequest bidRequest : bid_requests) {
+			LeadBidStatus leadBidStatus = new LeadBidStatus();
+			leadBidStatus.setBidStatus(bidRequest.getBid_status());
+			leadBidStatus.setListing_id(bidRequest.getListing_id());
+			leadBidStatus.setBidAmount(bidRequest.getBid_amount());
+			leadBidStatus.setDatestamp(new Date());
+			leadBidStatus.setLeadId(bidRequest.getListing_id());
+			
+			LeadBidStatusList.add(leadBidStatus);
+		}
+		System.out.println("LeadBidStatusList"+ LeadBidStatusList.size());
+		repoHelper.saveAffilcateLeadBidStatusList(LeadBidStatusList);
 	}
 
 	private boolean executeNarAndRiskModelUW(Result result) {

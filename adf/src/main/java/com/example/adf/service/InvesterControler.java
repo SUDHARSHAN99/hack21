@@ -1,6 +1,7 @@
 package com.example.adf.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.adf.Helper.ControllerHelper;
+import com.example.adf.dto.LeadBidStatus;
+import com.example.adf.dto.RepoHelper;
 import com.example.adf.model.ResultList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,6 +34,9 @@ public class InvesterControler {
 	
 	@Autowired
 	private ModelCallHandler modelCallHandler;
+	
+	@Autowired
+	private RepoHelper repoHelper;
 	
 	@RequestMapping(value = "/prosper/list", method = RequestMethod.GET)
 	public String investerList(HttpServletRequest httpServletRequest, HttpServletResponse response) {
@@ -58,8 +64,8 @@ public class InvesterControler {
 	
 	@RequestMapping(value = "/bidSatus", method = RequestMethod.GET)
 	public String investerBidStatus(HttpServletRequest httpServletRequest, HttpServletResponse response) {
-		return marketListingUrl;
+		List<LeadBidStatus> findAllLeadBidStatusList = repoHelper.findAllLeadBidStatusList();
+		return findAllLeadBidStatusList.toString();
 		
-
 	}
 }

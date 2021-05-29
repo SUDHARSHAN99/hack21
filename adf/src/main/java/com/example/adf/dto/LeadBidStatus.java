@@ -33,10 +33,10 @@ public class LeadBidStatus implements Serializable, Cloneable {
 	  private Date datestamp;
 
 	  @Column(name = "bidAmount")
-	  private int bidAmount;
+	  private double bidAmount;
 
 	  @Column(name = "listing_id")
-	  private int listing_id;
+	  private long listing_id;
 	  
 
 	  @Column(name="bidStatus")
@@ -76,22 +76,22 @@ public class LeadBidStatus implements Serializable, Cloneable {
 	}
 
 
-	public int getBidAmount() {
+	public double getBidAmount() {
 		return bidAmount;
 	}
 
 
-	public void setBidAmount(int bidAmount) {
+	public void setBidAmount(double bidAmount) {
 		this.bidAmount = bidAmount;
 	}
 
 
-	public int getListing_id() {
+	public long getListing_id() {
 		return listing_id;
 	}
 
 
-	public void setListing_id(int listing_id) {
+	public void setListing_id(long listing_id) {
 		this.listing_id = listing_id;
 	}
 
