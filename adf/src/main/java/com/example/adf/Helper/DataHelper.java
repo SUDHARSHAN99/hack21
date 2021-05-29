@@ -10,6 +10,7 @@ import com.example.adf.dto.InvestorDecisionRule;
 public class DataHelper {
 
 	private static Map<Long, List<InvestorDecisionRule>> ruleMap = new HashMap<>();
+	private static Map<Long, String> scoreMap = new HashMap<>();
 
 	static public void addDecisionRules(Long leadId, InvestorDecisionRule rule) {
 		List<InvestorDecisionRule> list = ruleMap.get(leadId);
@@ -24,6 +25,14 @@ public class DataHelper {
 
 	public static List<InvestorDecisionRule> getDecisionRules(Long leadId) {
 		return ruleMap.get(leadId);
+	}
+	
+	public static String getScoreMap(Long leadId) {
+		return scoreMap.get(leadId);
+	}
+	
+	public static String addScoreMap(Long leadId, String score) {
+		return scoreMap.put(leadId, score);
 	}
 
 }

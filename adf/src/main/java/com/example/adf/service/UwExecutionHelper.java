@@ -128,7 +128,13 @@ public class UwExecutionHelper {
 
 	public boolean validateModelScore(long leadId, String key) {
 		//String key = riskModelScore + "_" + narModelScore;
-		boolean flag = modelScoreMap.containsKey(key);
+		boolean flag = false;
+		try {
+			flag = modelScoreMap.containsKey(key);
+				
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		if(!flag) {
 			System.out.println(" Model check get failed for lead" + leadId + " key =" +key);
 			DataHelper.addDecisionRules(leadId, InvestorRuleService.buildRule(leadId, RuleId.MODEL_CUTOFF_FAIL));
@@ -259,6 +265,13 @@ public class UwExecutionHelper {
 		if (str.length() > 0)
 			return false;
 		return true;
+	}
+	
+	public boolean isNarAndRisk(String scoremap) {
+		if(modelScoreMap.containsKey(scoremap))
+			return true;
+		else
+			return false;
 	}
 
 }

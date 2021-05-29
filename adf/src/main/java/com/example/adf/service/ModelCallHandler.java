@@ -68,11 +68,11 @@ public class ModelCallHandler {
 			boolean ruleResult = true ;//buildAndExcecuteBasicChecks(result);
 			System.out.println(" ruleResult = " + ruleResult + "  " + result.getListing_number());
 			if(ruleResult) {
-				boolean modelResult = executeNarAndRiskModelUW();
-				if(modelResult) {
-					System.out.println(" Lead is eligible for bid" + result.getListing_number());
-					makeBidRequest(result);
-				}
+				boolean modelResult = executeNarAndRiskModelUW(result);
+				/*
+				 * if(modelResult) { System.out.println(" Lead is eligible for bid" +
+				 * result.getListing_number()); makeBidRequest(result); }
+				 */
 			}
 		}
 	}
@@ -95,13 +95,13 @@ public class ModelCallHandler {
 		System.out.println(" Bid placed successfully");
 	}
 
-	private boolean executeNarAndRiskModelUW() {
+	private boolean executeNarAndRiskModelUW(Result result) {
 		AtomicBoolean flag = new AtomicBoolean();
 		try {
 			CountDownLatch countDownLatch = new CountDownLatch(1);
 			executorService.execute(() -> {
 				try {
-					callNarModel();
+					callNarModel(result);
 				} catch (Exception e) {
 					flag.set(true);
 					e.printStackTrace();
@@ -132,7 +132,7 @@ public class ModelCallHandler {
 		RiskModelResponse riskModelResponse =	JsonMapper.bindStringToObject(response, RiskModelResponse.class);
 	}
 
-	private void callNarModel() throws InterruptedException, ExecutionException, IOException {
+	private void callNarModel(Result result) throws InterruptedException, ExecutionException, IOException {
 		NarModelRequest narModelRequest = buildNarModelRequest();
 		String request = "{\r\n" + 
 				"\"credit_bureau_values_transunion_indexed\": {\r\n" + 
@@ -547,7 +547,14 @@ public class ModelCallHandler {
 				"}";//JsonMapper.bindObjectToString(narModelRequest);
 		String response = httpAgent.hitEndPoint(request, riskModelUrl, contentType);
 		System.out.println("risk and nar response"+ response);
-		NarModelResponse narModelResponse =	JsonMapper.bindStringToObject(response, NarModelResponse.class);
+		DataHelper.addScoreMap(result.getListing_number(), response);
+		boolean narAndRisk = uwExecutionHelper.validateModelScore(result.getListing_number(), response);
+		if(narAndRisk) {
+			System.out.println("Model passed");
+			makeBidRequest(result);
+		}else
+			System.out.println("Model failed");
+		//NarModelResponse narModelResponse =	JsonMapper.bindStringToObject(response, NarModelResponse.class);
 	}
 
 	private boolean executeModelSocreValidation() {
