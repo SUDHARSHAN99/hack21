@@ -41,7 +41,10 @@ public class Lead implements Serializable, Cloneable {
 	private String empType;
 
 	@Column(name = "empStatus")
-	private Boolean empStatus;
+	private String empStatus;
+	
+	@Column(name = "listingId")
+	private String listingId;
 
 	public Lead() {
 	}
@@ -86,18 +89,26 @@ public class Lead implements Serializable, Cloneable {
 		this.empType = empType;
 	}
 
-	public Boolean getEmpStatus() {
+	public String getEmpStatus() {
 		return empStatus;
 	}
 
-	public void setEmpStatus(Boolean empStatus) {
+	public void setEmpStatus(String empStatus) {
 		this.empStatus = empStatus;
+	}
+
+	public String getListingId() {
+		return listingId;
+	}
+
+	public void setListingId(String listingId) {
+		this.listingId = listingId;
 	}
 
 	@Override
 	public String toString() {
 		return "Lead [id=" + id + ", fname=" + fname + ", datestamp=" + datestamp + ", lname=" + lname + ", empType="
-				+ empType + ", empStatus=" + empStatus + "]";
+				+ empType + ", empStatus=" + empStatus + ", listingId=" + listingId + "]";
 	}
 
 }

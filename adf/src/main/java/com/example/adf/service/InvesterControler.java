@@ -55,4 +55,11 @@ public class InvesterControler {
 		return "PoNg:)";
 
 	}
+	
+	@RequestMapping(value = "/bidSatus", method = RequestMethod.GET)
+	public String investerBidStatus(HttpServletRequest httpServletRequest, HttpServletResponse response) {
+		return marketListingUrl;
+		
+
+	}
 }

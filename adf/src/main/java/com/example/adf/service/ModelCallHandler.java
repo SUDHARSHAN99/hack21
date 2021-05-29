@@ -52,6 +52,9 @@ public class ModelCallHandler {
 	private HttpAgent httpAgent;
 	
 	@Autowired
+	private DataHelper dataHelper;
+	
+	@Autowired
 	private UwExecutionHelper uwExecutionHelper;
 	
 	@Autowired
@@ -65,6 +68,7 @@ public class ModelCallHandler {
 		boolean validateRequest = true;//uwExecutionHelper.validateRequest(result);
 		System.out.println(" validateRequest result=" +validateRequest +" " + result.getListing_number() );
 		if(validateRequest) {
+			dataHelper.buildLeadEntity(result);
 			boolean ruleResult = true ;//buildAndExcecuteBasicChecks(result);
 			System.out.println(" ruleResult = " + ruleResult + "  " + result.getListing_number());
 			if(ruleResult) {
@@ -88,11 +92,18 @@ public class ModelCallHandler {
 			String response = httpAgent.hitEndPoint(request, bidUrl, contentType);
 			System.out.println(" Response from market place" + response);
 			BidResponse bidResponse = JsonMapper.bindStringToObject(response, BidResponse.class);
+			System.out.println("bidResponse::"+ bidResponse);
+			buildBidResponse(bidResponse);
 		} catch (Exception e) {
 			System.out.println(" Biding got failed");
 			e.printStackTrace();
 		}
 		System.out.println(" Bid placed successfully");
+	}
+
+	private void buildBidResponse(BidResponse bidResponse) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private boolean executeNarAndRiskModelUW(Result result) {

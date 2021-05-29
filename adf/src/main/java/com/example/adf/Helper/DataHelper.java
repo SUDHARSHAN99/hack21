@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.adf.dto.InvestorDecisionRule;
+import com.example.adf.dto.Lead;
+import com.example.adf.model.Result;
 
 public class DataHelper {
 
@@ -34,5 +36,14 @@ public class DataHelper {
 	public static String addScoreMap(Long leadId, String score) {
 		return scoreMap.put(leadId, score);
 	}
+
+	public void buildLeadEntity(Result result) {
+		Lead lead = new Lead();
+		lead.setEmpStatus(result.getEmployment_status_description());
+		lead.setEmpType(result.getEmployment_status_description());
+		lead.setListingId(result.getListing_number());
+		
+	}
+	
 
 }
