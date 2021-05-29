@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.example.adf.Helper.DataHelper;
+import com.example.adf.dto.InvestorDecisionRule;
+import com.example.adf.dto.RepoHelper;
 import com.example.adf.model.BidRequest;
 import com.example.adf.model.BidRequestList;
 import com.example.adf.model.BidResponse;
@@ -27,6 +30,8 @@ import com.example.adf.model.Result;
 import com.example.adf.model.ResultList;
 import com.example.adf.model.RiskModelRequest;
 import com.example.adf.model.RiskModelResponse;
+
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -48,6 +53,9 @@ public class ModelCallHandler {
 	
 	@Autowired
 	private UwExecutionHelper uwExecutionHelper;
+	
+	@Autowired
+	private RepoHelper repoHelper;
 	
 	public void processResultList(ResultList resultList ) {
 		resultList.getResult().parallelStream().forEach(e -> processLead(e));
@@ -556,10 +564,10 @@ public class ModelCallHandler {
 	
 	private boolean buildAndExcecuteBasicChecks(Result result) {
 		List<Callable<Boolean>> callableList = new ArrayList<>();
-		callableList.add(() -> uwExecutionHelper.validateState(result.getBorrower_state()));
-		callableList.add(() -> uwExecutionHelper.validateTerm(result.getListing_term()));
-		callableList.add(() -> uwExecutionHelper.validateLoan(result.getWhole_loan()));
-		callableList.add(() -> uwExecutionHelper.validateCoBorrowerApplication(result.isCo_borrower_application()));
+		callableList.add(() -> uwExecutionHelper.validateState(result.getListing_number(), result.getBorrower_state()));
+		callableList.add(() -> uwExecutionHelper.validateTerm(result.getListing_number(), result.getListing_term()));
+		callableList.add(() -> uwExecutionHelper.validateLoan(result.getListing_number(), result.getWhole_loan()));
+		callableList.add(() -> uwExecutionHelper.validateCoBorrowerApplication(result.getListing_number(), result.isCo_borrower_application()));
 		CompletionService<Boolean> completionService = new ExecutorCompletionService<Boolean>(executorService);
 		
 		List<Future<Boolean>> futures = new ArrayList<Future<Boolean>>();
@@ -577,6 +585,21 @@ public class ModelCallHandler {
 			}
 		}
 	    return true;
+
+	}
+	
+	public void saveInvestorDecisionRules(long leadId) {
+		try {
+			if (DataHelper.getDecisionRules(leadId) != null) {
+				System.out.println("Decision rules for leadId " + leadId + ":" + DataHelper.getDecisionRules(leadId));
+				List<InvestorDecisionRule> decisionRuleServices = DataHelper.getDecisionRules(leadId);
+				System.out.println("Save these decision rules for " + leadId + " is  " + decisionRuleServices);
+				repoHelper.saveAffilcateDecisionRulesList(decisionRuleServices);
+				System.out.println("decision rules saved for " + leadId);
+			}
+		} catch (Exception e) {
+			System.out.println("Excepption occured while storing the decision rules " + e);
+		}
 
 	}
 

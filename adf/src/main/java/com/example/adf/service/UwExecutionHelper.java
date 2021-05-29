@@ -1,14 +1,16 @@
 package com.example.adf.service;
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 
+import com.example.adf.Helper.DataHelper;
+import com.example.adf.Helper.InvestorRuleService;
 import com.example.adf.model.Result;
 import com.github.jknack.handlebars.internal.lang3.StringUtils;
+import com.example.adf.Helper.RuleId;
 
 @Service
 public class UwExecutionHelper {
@@ -107,25 +109,38 @@ public class UwExecutionHelper {
 		modelScoreMap.put("10_2", true);
 	}
 
-	public boolean validateState(String state) {
+	public boolean validateState(long leadID, String state) {
 		System.out.println("Input State:"+state);
+		boolean flag;
 		if (StringUtils.isNotBlank(state)) {
 			System.out.println("Input State:2"+state);
-			return stateMap.containsKey(state);
+			flag =  stateMap.containsKey(state);
 		}
-		else
-			return false;
+		else {
+			flag = false;
+		}
+		if(!flag) {
+			System.out.println(" State check get failed for lead" + leadID + " satate =" +state);
+			DataHelper.addDecisionRules(leadID, InvestorRuleService.buildRule(leadID, RuleId.INVALID_STATE));
+		}
+		return flag;
 	}
 
-	public boolean validateModelScore(int riskModelScore, int narModelScore) {
-		String key = riskModelScore + "_" + narModelScore;
-		return modelScoreMap.containsKey(key);
+	public boolean validateModelScore(long leadId, String key) {
+		//String key = riskModelScore + "_" + narModelScore;
+		boolean flag = modelScoreMap.containsKey(key);
+		if(!flag) {
+			System.out.println(" Model check get failed for lead" + leadId + " key =" +key);
+			DataHelper.addDecisionRules(leadId, InvestorRuleService.buildRule(leadId, RuleId.MODEL_CUTOFF_FAIL));
+		}
+		return flag;
 	}
 
-	public boolean validateTerm(int term) {
+	public boolean validateTerm(long leadID, int term) {
 		try {
 			if (term == 60) {
-				System.out.println("Input Term:"+ term);
+				System.out.println(" Term check failed for lead:"+ leadID+" term =" +term);
+				DataHelper.addDecisionRules(leadID, InvestorRuleService.buildRule(leadID, RuleId.INVALID_TERM));
 				return false;
 			}
 			else
@@ -136,9 +151,10 @@ public class UwExecutionHelper {
 		}
 	}
 
-	public boolean validateLoan(String loan) {
+	public boolean validateLoan(long leadID, String loan) {
 		if (StringUtils.isNotBlank(loan) && loan.equalsIgnoreCase("Whole")) {
-			System.out.println("validateLoan whole loan"+loan);
+			System.out.println("validateLoan whole loan failed for "+ leadID+ " loan=" +loan);
+			DataHelper.addDecisionRules(leadID, InvestorRuleService.buildRule(leadID, RuleId.INVALID_WHOLE_LOAN));
 			return false;
 		}
 		else {
@@ -147,10 +163,13 @@ public class UwExecutionHelper {
 		}
 	}
 
-	public boolean validateCoBorrowerApplication(boolean value) {
+	public boolean validateCoBorrowerApplication(long leadID, boolean value) {
 		System.out.println("validateCoBorrowerApplication:"+ value);
-		if (!value)
+		if (!value) {
+			System.out.println("CoBorrowerApplication check failed for "+ leadID+ " value= "+ value);
+			DataHelper.addDecisionRules(leadID, InvestorRuleService.buildRule(leadID, RuleId.INVALID_CO_BORROWER_APPLICATION));
 			return false;
+		}
 		else
 			return true;
 	}
@@ -226,7 +245,7 @@ public class UwExecutionHelper {
 			if( errorMessage != null ) {
 				System.out.println("validation failure "+errorMessage);
 			}
-				
+			DataHelper.addDecisionRules(result.getListing_number(), InvestorRuleService.buildRule(result.getListing_number(), RuleId.INVALID_FIELD));
 		}
 		//return status;
 		return true;

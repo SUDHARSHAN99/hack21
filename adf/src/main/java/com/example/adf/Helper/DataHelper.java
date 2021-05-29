@@ -1,0 +1,29 @@
+package com.example.adf.Helper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.example.adf.dto.InvestorDecisionRule;
+
+public class DataHelper {
+
+	private static Map<Long, List<InvestorDecisionRule>> ruleMap = new HashMap<>();
+
+	static public void addDecisionRules(Long leadId, InvestorDecisionRule rule) {
+		List<InvestorDecisionRule> list = ruleMap.get(leadId);
+		if (list == null) {
+			list = new ArrayList<>();
+			ruleMap.put(leadId, list);
+		}
+		list.add(rule);
+
+		System.out.println("Rule added in entity holder for " + leadId + ":" + rule);
+	}
+
+	public static List<InvestorDecisionRule> getDecisionRules(Long leadId) {
+		return ruleMap.get(leadId);
+	}
+
+}
