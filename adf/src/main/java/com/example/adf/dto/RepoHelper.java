@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.adf.repo.LeadBidStatusRepo;
+import com.example.adf.repo.LeadModelScoresRepo;
 
 @Service
 public class RepoHelper {
@@ -15,6 +16,9 @@ public class RepoHelper {
 	
 	@Autowired
 	private LeadBidStatusRepo leadBidStatusRepo;
+	@Autowired
+	private LeadModelScoresRepo leadModelScoresrepo;
+
 
 	public List<InvestorDecisionRule> saveDecisionRulesList(List<InvestorDecisionRule> decisionRules) {
 		return nvestorDecisionRuleRepository.saveAll(decisionRules);
@@ -30,5 +34,13 @@ public class RepoHelper {
 	
 	public List<InvestorDecisionRule> findByListingId(Long leadId) {
 		return nvestorDecisionRuleRepository.findByLeadId(leadId);
+	}
+	
+	public LeadModelScores saveleadModelScoresList(LeadModelScores leadModelScores) {
+		return leadModelScoresrepo.save(leadModelScores);
+	}
+
+	public LeadModelScores findByListingIdOnModelScores(long parseLong) {
+		return leadModelScoresrepo.findByLeadId(parseLong);
 	}
 }

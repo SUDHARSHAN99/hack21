@@ -69,6 +69,22 @@ public class LeadModelScores implements Serializable,Cloneable {
 		return serialVersionUID;
 	}
 
+	public int getNarScore() {
+		return narScore;
+	}
+
+	public void setNarScore(int narScore) {
+		this.narScore = narScore;
+	}
+
+	public int getRiskScore() {
+		return riskScore;
+	}
+
+	public void setRiskScore(int riskScore) {
+		this.riskScore = riskScore;
+	}
+
 	@Override
 	public String toString() {
 		return "LeadBidStatus [id=" + id + ", leadId=" + leadId + ", datestamp=" + datestamp + ", narScore=" + narScore

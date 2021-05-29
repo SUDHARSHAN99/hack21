@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.adf.Helper.ControllerHelper;
 import com.example.adf.dto.InvestorDecisionRule;
 import com.example.adf.dto.LeadBidStatus;
+import com.example.adf.dto.LeadModelScores;
 import com.example.adf.dto.RepoHelper;
 import com.example.adf.model.ResultList;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,6 +76,13 @@ public class InvesterControler {
 	public String investerLeadDecisionRuleStatus(@PathVariable String leadId) {
 		List<InvestorDecisionRule> allInvestorDecisionRuleList = repoHelper.findByListingId(Long.parseLong(leadId));
 		return allInvestorDecisionRuleList.toString();
+		
+	}
+	
+	@RequestMapping(value = "/getModelScores/{leadId}", method = RequestMethod.GET)
+	public String getModelScores(@PathVariable String leadId) {
+		LeadModelScores leadModelScore = repoHelper.findByListingIdOnModelScores(Long.parseLong(leadId));
+		return leadModelScore.toString();
 		
 	}
 }

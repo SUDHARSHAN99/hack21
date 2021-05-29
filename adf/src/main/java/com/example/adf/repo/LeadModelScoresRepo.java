@@ -14,7 +14,7 @@ import com.example.adf.dto.LeadModelScores;
 public interface LeadModelScoresRepo extends JpaRepository<LeadModelScores, Long> {
   
 
-  List<Lead> findByLeadId(long id);
+  LeadModelScores findByLeadId(long id);
 
 
 }

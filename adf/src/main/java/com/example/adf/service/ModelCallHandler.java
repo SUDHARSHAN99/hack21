@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import com.example.adf.Helper.DataHelper;
 import com.example.adf.dto.InvestorDecisionRule;
 import com.example.adf.dto.Lead;
 import com.example.adf.dto.LeadBidStatus;
+import com.example.adf.dto.LeadModelScores;
 import com.example.adf.dto.RepoHelper;
 import com.example.adf.model.BidRequest;
 import com.example.adf.model.BidRequestList;
@@ -167,12 +169,28 @@ public class ModelCallHandler {
 		System.out.println("risk and nar response"+ response);
 		DataHelper.addScoreMap(result.getListing_number(), response);
 		boolean narAndRisk = uwExecutionHelper.validateModelScore(result.getListing_number(), response);
+		buildLeadModelScores(result,response);
 		if(narAndRisk) {
 			System.out.println("Model passed");
 			makeBidRequest(result);
 		}else
 			System.out.println("Model failed");
 		//NarModelResponse narModelResponse =	JsonMapper.bindStringToObject(response, NarModelResponse.class);
+	}
+
+	private void buildLeadModelScores(Result result, String narAndRisk) {
+		LeadModelScores leadModelScore = new LeadModelScores();
+		if(StringUtils.isNotBlank(narAndRisk)) {
+			String[] narAndRisklist = narAndRisk.split("_");
+			leadModelScore.setNarScore(Integer.parseInt(narAndRisklist[0]));
+			leadModelScore.setRiskScore(Integer.parseInt(narAndRisklist[0]));
+		}else {
+			leadModelScore.setNarScore(-1);
+			leadModelScore.setRiskScore(-1);
+		}
+		leadModelScore.setLeadId(result.getListing_number());
+		leadModelScore.setDatestamp(new Date());
+		repoHelper.saveleadModelScoresList(leadModelScore);
 	}
 
 	private boolean executeModelSocreValidation() {
